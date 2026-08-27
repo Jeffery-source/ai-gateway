@@ -1,0 +1,42 @@
+server:
+  host: 0.0.0.0
+  port: 8080
+
+providers:
+
+  openai:
+    type: openai-compatible
+    base_url: https://api.openai.com/v1
+    api_key: ${OPENAI_API_KEY}
+
+  deepseek:
+    type: openai-compatible
+    base_url: https://api.deepseek.com/v1
+    api_key: ${DEEPSEEK_API_KEY}
+
+  mock:
+    type: mock
+
+
+  ollama:
+    type: openai-compatible
+    base_url: http://localhost:11434/v1
+    api_key: ollama
+
+models:
+
+  test-model:
+    provider: mock
+    model: test-model
+
+  gpt-5.6:
+    provider: openai
+    model: gpt-5.6
+
+  deepseek-chat:
+    provider: deepseek
+    model: deepseek-v4-pro
+
+  qwen3:
+    provider: ollama
+    model: qwen3:8b
