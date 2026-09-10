@@ -145,6 +145,7 @@ func (p *Provider) Chat(
 	if len(openAIResp.Choices) == 0 {
 		return nil, fmt.Errorf("openai response contains no choices")
 	}
+	content := openAIResp.Choices[0].Message.Content
 
 	return &chat.ChatCompletionResponse{
 		ID:      openAIResp.ID,
@@ -156,7 +157,7 @@ func (p *Provider) Chat(
 				Index: openAIResp.Choices[0].Index,
 				Message: chat.Message{
 					Role:    openAIResp.Choices[0].Message.Role,
-					Content: openAIResp.Choices[0].Message.Content,
+					Content: &content,
 				},
 				FinishReason: openAIResp.Choices[0].FinishReason,
 			},

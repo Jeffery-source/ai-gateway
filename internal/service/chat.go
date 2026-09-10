@@ -8,6 +8,7 @@ import (
 	"ai_gateway/internal/conversation"
 	"ai_gateway/internal/modelrouter"
 	"ai_gateway/internal/provider"
+	"ai_gateway/internal/utils"
 )
 
 type ChatService struct {
@@ -63,7 +64,7 @@ func (s *ChatService) Chat(
 				req.ConversationID,
 				conversation.Message{
 					Role:    message.Role,
-					Content: message.Content,
+					Content: utils.StringValue(message.Content),
 				},
 			)
 
@@ -80,7 +81,7 @@ func (s *ChatService) Chat(
 				req.ConversationID,
 				conversation.Message{
 					Role:    message.Role,
-					Content: message.Content,
+					Content: utils.StringValue(message.Content),
 				},
 			)
 
@@ -145,7 +146,7 @@ func (s *ChatService) ChatStream(
 				req.ConversationID,
 				conversation.Message{
 					Role:    message.Role,
-					Content: message.Content,
+					Content: utils.StringValue(message.Content),
 				},
 			)
 
@@ -197,7 +198,7 @@ func (s *ChatService) buildMessages(
 			messages,
 			chat.Message{
 				Role:    message.Role,
-				Content: message.Content,
+				Content: utils.StringPtr(message.Content),
 			},
 		)
 	}

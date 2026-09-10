@@ -19,6 +19,7 @@ func (p *Provider) Chat(
 	req *chat.ChatCompletionRequest,
 ) (*chat.ChatCompletionResponse, error) {
 
+	content := "This is a mock response."
 	return &chat.ChatCompletionResponse{
 		ID:     "mock-response",
 		Object: "chat.completion",
@@ -28,7 +29,7 @@ func (p *Provider) Chat(
 				Index: 0,
 				Message: chat.Message{
 					Role:    "assistant",
-					Content: "This is a mock response.",
+					Content: &content,
 				},
 				FinishReason: "stop",
 			},

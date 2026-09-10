@@ -1,0 +1,20 @@
+services:
+  ai-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: ai-gateway
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      AI_GATEWAY_API_KEY: ${AI_GATEWAY_API_KEY}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    restart: unless-stopped

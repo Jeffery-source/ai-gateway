@@ -10,6 +10,10 @@ import (
 	"ai_gateway/internal/provider"
 )
 
+func stringPtr(s string) *string {
+	return &s
+}
+
 type recordingProvider struct {
 	requests []*chat.ChatCompletionRequest
 }
@@ -42,7 +46,7 @@ func (p *recordingProvider) Chat(
 				Index: 0,
 				Message: chat.Message{
 					Role:    "assistant",
-					Content: "你好，张三！",
+					Content: stringPtr("你好，张三！"),
 				},
 				FinishReason: "stop",
 			},
@@ -146,7 +150,7 @@ func TestChatServiceConversation(t *testing.T) {
 		Messages: []chat.Message{
 			{
 				Role:    "user",
-				Content: "我叫张三",
+				Content: stringPtr("我叫张三"),
 			},
 		},
 	}
@@ -170,7 +174,7 @@ func TestChatServiceConversation(t *testing.T) {
 		Messages: []chat.Message{
 			{
 				Role:    "user",
-				Content: "我叫什么？",
+				Content: stringPtr("我叫什么？"),
 			},
 		},
 	}
@@ -214,7 +218,7 @@ func TestChatServiceConversation(t *testing.T) {
 		)
 	}
 
-	if secondProviderRequest.Messages[0].Content != "我叫张三" {
+	if secondProviderRequest.Messages[0].Content != stringPtr("我叫张三") {
 		t.Fatalf(
 			"expected first message content '我叫张三', got %s",
 			secondProviderRequest.Messages[0].Content,
@@ -229,7 +233,7 @@ func TestChatServiceConversation(t *testing.T) {
 		)
 	}
 
-	if secondProviderRequest.Messages[1].Content != "你好，张三！" {
+	if secondProviderRequest.Messages[1].Content != stringPtr("你好，张三！") {
 		t.Fatalf(
 			"expected second message content '你好，张三！', got %s",
 			secondProviderRequest.Messages[1].Content,
@@ -244,7 +248,7 @@ func TestChatServiceConversation(t *testing.T) {
 		)
 	}
 
-	if secondProviderRequest.Messages[2].Content != "我叫什么？" {
+	if secondProviderRequest.Messages[2].Content != stringPtr("我叫什么？") {
 		t.Fatalf(
 			"expected third message content '我叫什么？', got %s",
 			secondProviderRequest.Messages[2].Content,
@@ -299,7 +303,7 @@ func TestChatServiceConversationStream(t *testing.T) {
 		Messages: []chat.Message{
 			{
 				Role:    "user",
-				Content: "你好",
+				Content: stringPtr("你好"),
 			},
 		},
 		Stream: true,

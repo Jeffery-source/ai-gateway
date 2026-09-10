@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"ai_gateway/internal/chat"
+	"ai_gateway/internal/utils"
 )
 
 type MockProvider struct{}
@@ -28,7 +29,7 @@ func (p *MockProvider) Chat(
 				Index: 0,
 				Message: chat.Message{
 					Role:    "assistant",
-					Content: "Hello from Mock Provider.",
+					Content: utils.StringPtr("Hello from Mock Provider."),
 				},
 				FinishReason: "stop",
 			},

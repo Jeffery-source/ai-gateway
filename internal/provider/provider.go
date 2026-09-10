@@ -6,6 +6,17 @@ import (
 	"ai_gateway/internal/chat"
 )
 
+func stringPtr(s string) *string {
+	return &s
+}
+
+func stringValue(s *string) string {
+	if s == nil {
+		return ""
+	}
+	return *s
+}
+
 type ModelProvider interface {
 	Chat(
 		ctx context.Context,

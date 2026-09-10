@@ -26,19 +26,22 @@ type chatRequest struct {
 	Messages    []chat.Message `json:"messages"`
 	Stream      bool           `json:"stream"`
 	Temperature *float64       `json:"temperature,omitempty"`
+
+	Tools      []chat.Tool `json:"tools,omitempty"`
+	ToolChoice interface{} `json:"tool_choice,omitempty"`
 }
 
 type chatResponse struct {
-	ID     string `json:"id"`
-	Object string `json:"object"`
-	Model  string `json:"model"`
+	ID      string `json:"id"`
+	Object  string `json:"object"`
+	Created int64  `json:"created"`
+	Model   string `json:"model"`
 
 	Choices []struct {
-		Index   int `json:"index"`
-		Message struct {
-			Role    string `json:"role"`
-			Content string `json:"content"`
-		} `json:"message"`
+		Index int `json:"index"`
+
+		Message chat.Message `json:"message"`
+
 		FinishReason string `json:"finish_reason"`
 	} `json:"choices"`
 }
@@ -65,6 +68,8 @@ func (p *Provider) Chat(
 		Model:       req.Model,
 		Messages:    req.Messages,
 		Temperature: req.Temperature,
+		Tools:       req.Tools,
+		ToolChoice:  req.ToolChoice,
 	}
 
 	body, err := json.Marshal(openAIReq)
@@ -137,11 +142,8 @@ func (p *Provider) Chat(
 		Model:   providerResp.Model,
 		Choices: []chat.Choice{
 			{
-				Index: providerResp.Choices[0].Index,
-				Message: chat.Message{
-					Role:    providerResp.Choices[0].Message.Role,
-					Content: providerResp.Choices[0].Message.Content,
-				},
+				Index:        providerResp.Choices[0].Index,
+				Message:      providerResp.Choices[0].Message,
 				FinishReason: providerResp.Choices[0].FinishReason,
 			},
 		},
@@ -167,6 +169,8 @@ func (p *Provider) ChatStream(
 		Messages:    req.Messages,
 		Stream:      true,
 		Temperature: req.Temperature,
+		Tools:       req.Tools,
+		ToolChoice:  req.ToolChoice,
 	}
 
 	body, err := json.Marshal(providerReq)
