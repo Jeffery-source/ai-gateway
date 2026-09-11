@@ -350,14 +350,9 @@ type chatResponseChunk struct {
 	Model   string `json:"model"`
 
 	Choices []struct {
-		Index int `json:"index"`
-
-		Delta struct {
-			Role    string `json:"role"`
-			Content string `json:"content"`
-		} `json:"delta"`
-
-		FinishReason *string `json:"finish_reason"`
+		Index        int        `json:"index"`
+		Delta        chat.Delta `json:"delta"`
+		FinishReason *string    `json:"finish_reason"`
 	} `json:"choices"`
 }
 
@@ -379,11 +374,8 @@ func convertChunk(
 		result.Choices = append(
 			result.Choices,
 			chat.ChunkChoice{
-				Index: choice.Index,
-				Delta: chat.Delta{
-					Role:    choice.Delta.Role,
-					Content: choice.Delta.Content,
-				},
+				Index:        choice.Index,
+				Delta:        choice.Delta,
 				FinishReason: choice.FinishReason,
 			},
 		)
